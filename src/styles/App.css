@@ -78,7 +78,7 @@
     justify-content: right;
     align-items: right;
   }
-  .buttonDelete{
+  .delete{
     font-size: 15px;
     border-radius: 15%;
     width: 40px;
@@ -87,7 +87,7 @@
     
   
   }
-  .buttonEdit{
+  .edit{
     font-size: 15px;
     border-radius: 15%;
     width: 40px;
