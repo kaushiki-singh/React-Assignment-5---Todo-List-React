@@ -1,72 +1,79 @@
-import React, {useState} from "react";
+import React from "react";
+import { useState } from "react";
+import ToDoList from "./ToDolist";
+import EnterItem from "./EnterItem";
 import "./../styles/App.css";
-import ToDoList from './ToDoList';
 
-function App() 
-{
-	const [item, setItem] = useState("");
-  const [displayItem, setDisplayItem] = useState([]);
+function App() {
+  const [item, setItem] = useState("");
+  const [itemArr, setItemArr] = useState([]);
 
-  const inputEvent = (event) => {
+  const itemValue = (event) => {
     setItem(event.target.value);
-  }
-  const addToList = () => {
-    setDisplayItem((oldItems) => {
-      return [...oldItems, item];
+  };
+
+  const ChangeValue = () => {
+    if (item.trim() !== "") {
+      setItemArr([...itemArr, item]);
+      setItem("");
+    }
+  };
+
+  const deletitem = (id) => {
+    // console.log("delete");
+    setItemArr((preValu) => {
+      return preValu.filter((arrEle, index) => {
+        return index !== id;
+      });
     });
-    setItem("");
-  }
+  };
 
-  const deleteItem = (id) => {
-  
-        // console.log("deleted");
-        setDisplayItem((oldItems) => {
-          return oldItems.filter((arrEle, index)=>{
-            return index !== id;
+  const updateItem = (id, editValue) => {
+    // console.log(id);
+    // console.log(editValue);
+    if (editValue !== "") {
+      setItemArr((preValu) => {
+        preValu[id] = editValue;
+        return [...preValu];
+      });
+    }
+  };
 
-          });
-        });
-  }
-  const editItem = (id, editValue) => {
- if(editValue !== ""){
-   setDisplayItem((oldItems)=> {
-     oldItems[id] = editValue;
-     return [...oldItems];
-   });
-   
- }
-  
-  }
-	return (
-	<div id="main">
-	<div className = "main_div">
-      <div className = "center-div">
+  return (
+    <div id="main">
+      <div className="center_div">
         <br />
         <h1>ToDo List</h1>
-        <br/>
-        <textarea id = "task" type="text" placeholder="add items" onChange={inputEvent} value={item}/>
-        <button id="btn" onClick={addToList}>+</button>
-
+        <br />
+        <EnterItem
+          id="task"
+          type="text"
+          placeholder="Add a Item"
+          value={item}
+          onChange={itemValue}
+        />
+        <button id="btn" onClick={ChangeValue}>
+          +
+        </button>
         <ol>
-          {/* <li>{displayItem}</li> */}
-
-          {displayItem.map( (itemVal, index) => {
-            return <ToDoList
-              key={index}
-               id={index}
-                itemVal={itemVal}
-                onSelectDelete = {deleteItem}
-                onSelectEdit = {editItem}
-                />
-            // return <li>{itemVal}</li>
-          } )}
+          {itemArr.map((itemCur, index) => {
+            return (
+              <ToDoList
+                className="list"
+                classNameDelete="delete"
+                classNameEdit="edit"
+                key={index}
+                id={index}
+                text={itemCur}
+                onSelect={deletitem}
+                onEdit={updateItem}
+              />
+            );
+          })}
         </ol>
       </div>
-
     </div>
-	</div>
-	);
+  );
 }
-
 
 export default App;

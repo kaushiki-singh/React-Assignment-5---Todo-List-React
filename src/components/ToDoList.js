@@ -1,61 +1,59 @@
-import React, {useState} from 'react';
+import React from "react";
+import { useState } from "react";
+import "./../styles/App.css";
 
 const ToDoList = (props) => {
+  const [editInput, setEditInput] = useState("");
+  const [addInEdit, setAddInEdit] = useState({
+    show: false,
+  });
 
-    const [editInput, setEditInput] = useState("");
-    const [addEdit, setAddEdit] = useState({
-        show: false,
-    });
-
-    const EditItem = () => {
-        setAddEdit({show: true});
-    };
-
-    const editUpdate = (event) => {
-        setEditInput(event.target.value.trim());
-    };
-
-
-    
-    return (
-        <>
-        <div className="todo-styles">
-
-        <button className="delete"
-         onClick={() => {
-             props.onSelectDelete(props.id)}}>
-                 Delete</button>
-
-        {addEdit.show ? (
-            <>
+  const EditItem = () => {
+    console.log("edit");
+    setAddInEdit({ show: true });
+  };
+  const funEditUpdate = (event) => {
+    setEditInput(event.target.value.trim());
+  };
+  return (
+    <>
+      <div className="todo_style">
+        <li className={props.className}>{props.text}</li>
+        <button
+          className={props.classNameDelete}
+          onClick={() => {
+            props.onSelect(props.id);
+          }}
+        >
+          delete
+        </button>
+        {addInEdit.show ? (
+          <>
             <br />
-            <textarea
-            className="editTask"
-            placeholder="edit"
-            onChange={editUpdate}
+            <input
+              type="text"
+              className="editTask"
+              placeholder="Edit"
+              onChange={funEditUpdate}
             />
-
             <button
-            className="saveTask"
-            onClick={()=>{
-                props.onSelectEdit(props.id, editInput);
-                setAddEdit({show: false});
-            }}
+              className="saveTask"
+              onClick={() => {
+                props.onEdit(props.id, editInput);
+                setAddInEdit({ show: false });
+              }}
             >
-                +
+              +
             </button>
-            </>
+          </>
         ) : (
-           
-        
-        <button className="edit"
-         onClick={EditItem}>
-                 Edit</button>
+          <button className={props.classNameEdit} onClick={EditItem}>
+            edit
+          </button>
         )}
-        <li className="list">{props.itemVal}</li>
-        </div>
-        </>
-    );
+      </div>
+    </>
+  );
 };
 
 export default ToDoList;
